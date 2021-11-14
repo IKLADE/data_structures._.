@@ -6,7 +6,7 @@ void display();
 void insert_end();
 void del_end();
 void traverse();
-void insert_sorted();
+//void insert_sorted();
 
 struct node
 {
@@ -213,7 +213,7 @@ void traverse()
         printf("Element not found\n");
 }
 
-void insert_sorted()
+/*void insert_sorted()
 {
     struct node *p,*temp,*follow;
     int item;
@@ -246,7 +246,7 @@ void insert_sorted()
         p->next=temp;
 
     }
-}
+} */
 void traverse_min()
 {
     int min=99999;
