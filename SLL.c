@@ -49,9 +49,9 @@ int main()
             case 6:
             traverse();
             break;
-            case 7:
-            insert_sorted();
-            break;
+            //case 7:
+            //insert_sorted();
+            //break;
             case 8:
             exit(0);
         }
@@ -125,33 +125,27 @@ void display()
 void insert_end()
 {
         struct node *p = (struct node*)malloc(sizeof(struct node));
-        struct node *temp;
+        struct node *temp=start;
         int item;
         printf("Enter element to be inserted:\n");
         scanf("%d",&item);
-        if(p == NULL)
+        if(start == NULL)
         {
-            printf("Empty List\n");
+            p->info = item;
+            p -> next = NULL;
+            start = p;
         }
         else
         {
             p->info = item;
-            if(start == NULL)
+            while (temp -> next != NULL)
             {
-                p -> next = NULL;
-                start = p;
+                temp = temp -> next;
             }
-            else
-            {
-                temp = start;
-                while (temp -> next != NULL)
-                {
-                    temp = temp -> next;
-                }
-                temp->next = p;
-                p->next = NULL;
+            temp->next = p;
+            p->next = NULL;
 
-            }
+            
         }
 }
 
@@ -166,7 +160,6 @@ void del_end()
     else if(start->next==NULL)
     {
         temp=start;
-
         start=NULL;
         printf("Deleted element is:%d\n",temp->info);
         free(temp);
@@ -246,7 +239,7 @@ void traverse()
         p->next=temp;
 
     }
-} */
+}*/
 void traverse_min()
 {
     int min=99999;
@@ -258,4 +251,22 @@ void traverse_min()
         temp=temp->next;
     }
     printf("Smallest element %d\n",min);
+}
+
+void reversal()
+{
+    struct node *prevptr = NULL;
+    struct node *currtptr = start;
+    struct node *nextptr;
+
+    while (currtptr != NULL)
+    {
+        nextptr = currtptr->next;
+        currtptr->next = prevptr;
+
+        prevptr = currtptr;
+        currtptr = nextptr;
+    }
+
+    start = prevptr;
 }
