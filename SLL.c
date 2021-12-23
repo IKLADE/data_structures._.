@@ -274,6 +274,19 @@ void reversal()
     start = prev;
 }
 
+// void reverse_printing(struct node *start)    reverse printing without actual reversal
+// {
+//     if(start==NULL)
+//     {
+//         return ;
+//     }
+//     else
+//     {
+//         reverse_printing(start->next);
+//         printf("%d\t",start->info);
+//     }
+// }
+
 void sort()
 {
     int x;
