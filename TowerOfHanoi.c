@@ -8,14 +8,10 @@ void tower(int n,char s,char t,char d)
 	{
 		tower(n-1,s,d,t);
 		printf("move disc %d from %c to %c\n",n,s,d);
-		tower(n-1,t,s,d);
-		count++;
+		tower(n-1,t,s,d);		
 	}
 
 }
-
-
-
 
 int main()
 {
