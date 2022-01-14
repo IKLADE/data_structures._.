@@ -22,11 +22,9 @@ void push(char item)
 char pop()
 {
     char item;
-
     if(top<0)
     {
         printf("Stack underflow:invalid infix\n");
-        exit(1);
     }
     else
     {
@@ -55,13 +53,13 @@ char peek()
 
 int prec(char x)
 {
-    if(x=='*'||x=='/')
+    if(x=='^')
         return(3);
-    else if(x=='+'||x=='-')
+    else if(x=='*'||x=='/')
         return(2);
-    else if(x=='(')
+    else if(x=='+'||x=='-')
         return(1);
-    else
+    else if(x=='('||x==')')
         return(0);
 }
 
@@ -98,13 +96,12 @@ void InToPost(char infix[],char postfix[])
         {
             y=peek();
 
-            while(prec(y)==prec(item))
+            while(prec(y)>=prec(item))
             {
                 x=pop();
                 postfix[j]=x;
                 j++;
                 y=peek();
-
             }
             push(item);
         }
@@ -126,7 +123,7 @@ int main() {
 
     char infix[SIZE],postfix[SIZE];
 
-    printf("ENetr infix:\n");
+    printf("Enter infix:\n");
     gets(infix);
 
     InToPost(infix,postfix);

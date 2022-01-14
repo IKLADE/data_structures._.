@@ -8,8 +8,15 @@ void del_end();
 void traverse();
 void sort();
 void insert_sorted();
-//void traverse_min();
+void traverse_min();
 void reversal();
+void reverse_printing(struct node *start);
+bool isPrime(int x);
+void min_max_prime();
+void insert_before();
+void insert_after();
+void delete_before();
+void delete_after();
 
 struct node
 {
@@ -33,7 +40,11 @@ int main()
         printf("7.Sort the SLL\n");
         printf("8.Insert in sorted manner\n");
         printf("9.Reverse\n");
-        printf("10.Exit\n");
+        printf("10.Insert before\n");
+        printf("11.Insert after\n");
+        printf("12.Delete before\n");
+        printf("13.Delete after\n");
+        printf("14.Exit\n");
         scanf("%d",&c);
         switch(c)
         {
@@ -62,7 +73,19 @@ int main()
             insert_sorted();
             break;
             case 9:
-            reverse();
+            reversal();
+            break;
+            case 10:
+            insert_before();
+            break;
+            case 11:
+            insert_after();
+            break;
+            case 12:
+            delete_before();
+            break;
+            case 13:
+            delete_after();
             break;
             default:
             exit(0);
@@ -77,15 +100,14 @@ int main()
 void insert_beg()
 {
     int x;
-    struct node *temp,*p;
+    struct node *p;
     printf("Enter the element:\n");
     scanf("%d",&x);
-    p=(struct node*)malloc(sizeof(struct node));
-    temp=start;
+    p=(struct node*)malloc(sizeof(struct node));  
     if(start==NULL)
     {
         p->info=x;
-        p->next=NULL;
+        p->next=NULL:
         start=p;
     }
     else
@@ -107,7 +129,7 @@ void del_beg()
     else
     {
         start=temp->next;
-        printf("The deleted element is:\n%d",temp->info);
+        printf("The deleted element is:%d\n",temp->info);
         free(temp);
     }
     printf("\n");
@@ -115,7 +137,6 @@ void del_beg()
 
 void display()
 {
-    int sum=0;
     struct node *temp;
     temp=start;
     if(start==NULL)
@@ -132,7 +153,6 @@ void display()
         }
     }
     printf("\n");
-
 }
 
 void insert_end()
@@ -150,11 +170,11 @@ void insert_end()
         }
         else
         {
-            p->info = item;
-            while (temp -> next != NULL)
+            while (temp->next!= NULL)
             {
                 temp = temp -> next;
             }
+            p->info = item;
             temp->next = p;
             p->next = NULL;
 
@@ -206,6 +226,7 @@ void traverse()
         {
             printf("Element found at node %d\n",i);
             flag=1;
+            break;
         }
         temp=temp->next;
         i++;
@@ -216,24 +237,62 @@ void traverse()
 
 void insert_sorted()
 {
-    struct node *temp=start,*index=NULL;
+    struct node *temp=start,*follow=NULL;
     int x;
     struct node *p=(struct node *)malloc(sizeof(struct node));
     printf("Enter element to be inserted in sorted sll:\t");
     scanf("%d",&x);
-    while(temp->next!=NULL)
+    if(start==NULL)
     {
-        index=temp->next;
-        
-        if(x>temp->info && x<index->info)
+        p->info=x;
+        p->next=NULL;
+        start=p;
+    }
+    else if(start->next==NULL)
+    {
+        if(x>=start->info)
         {
-            p->info=x;
-            p->next=index;
-            temp->next=p;
-            break;
+            p->info=x;    //insert_end(x); for first element
+            p->next=NULL;
+            start->next=p;
         }
-        temp=temp->next;
-    
+        else
+        {
+            p->info=x;   //insert_beg(x); for first element
+            p->next=start;
+            start=p;
+        }
+
+    }
+    else
+    {
+        while(temp->next!=NULL)
+        {
+            follow=temp;
+            temp=temp->next;
+            if(x>follow->info && x<temp->info)
+                break;           
+        }
+        if(x<follow->info)
+        {
+            p->info=x;   //insert_beg(x);
+            p->next=start;
+            start=p;
+
+        }
+        else if(x>=follow->info && x<=temp->info)
+        {
+            p->info=x;  //insert in between elements 
+            follow->next=p;
+            p->next=temp;
+        }
+        else //if(temp->next==NULL && x>=temp->info)
+        {
+            p->info=x;    //insert_end(x);
+            p->next=NULL;
+            temp->next=p;
+        }
+        
     }
 }
 void traverse_min()
@@ -274,18 +333,18 @@ void reversal()
     start = prev;
 }
 
-// void reverse_printing(struct node *start)    reverse printing without actual reversal
-// {
-//     if(start==NULL)
-//     {
-//         return ;
-//     }
-//     else
-//     {
-//         reverse_printing(start->next);
-//         printf("%d\t",start->info);
-//     }
-// }
+void reverse_printing(struct node *start)    //reverse printing without actual reversal
+{
+    if(start==NULL)
+    {
+        return ;
+    }
+    else
+    {
+        reverse_printing(start->next);
+        printf("%d\t",start->info);
+    }
+}
 
 void sort()
 {
@@ -294,6 +353,7 @@ void sort()
     if(start==NULL)
     {
         printf("Empty list\n");
+        return ;
     }
     else
     {
@@ -313,7 +373,27 @@ void sort()
             temp=temp->next;
 
         }
+        printf("Linked List sorted\n");
     }
+}
+
+struct node *mergesort(struct node *a,struct node *b)
+{
+    struct node *temp=NULL;
+    if(a==NULL)
+        return b;
+    else if(b==NULL)
+        return a;
+
+    if (a->info<=b->info) {
+        temp=a;
+        temp->next=mergesort(a->next, b);
+    }
+    else {
+        temp=b;
+        temp->next=mergesort(a, b->next);
+    }
+    return (temp);
 }
 
 void insert_after()
@@ -326,12 +406,9 @@ void insert_after()
     printf("Enter the key after which the element is to be inserted:\t ");
     scanf("%d",&key);
     if(start==NULL)
-        printf("Empty list\n");
-    if(start->info==key)
     {
-        p->info=x;
-        p->next=start->next;
-        start->next=p;
+        printf("Empty list\n");
+        return ;
     }
     while(temp->next!=NULL && temp->info!=key)
     {
@@ -357,19 +434,22 @@ void insert_before()
     printf("Enter the key before which the element is to be inserted:\t ");
     scanf("%d",&key);
     if(start==NULL)
+    {
         printf("Empty list\n");
+        return ;
+    }
     if(start->info==key)
     {
         p=(struct node *)malloc(sizeof(struct node));
         p->info=x;
-        p->next=temp;
+        p->next=start;
         start=p;
+        return ;
     }
     while(temp!=NULL && temp->info!=key)
     {
         follow=temp;
-        temp=temp->next;
-        
+        temp=temp->next;                               
     }
     if(temp==NULL)
         printf("key not found\n");
@@ -379,8 +459,118 @@ void insert_before()
         p->info=x;
         follow->next=p;
         p->next=temp;
-    }
-    printf("element inserted\n");   
+    }   
 
 }
 
+void delete_before()
+{
+    struct node *follow=NULL,*temp=start;
+    int key;
+    printf("Enter the key before which the element is to be deleted:\t ");
+    scanf("%d",&key);
+    if(start==NULL)
+    {
+        printf("Empty list\n");
+        return ;
+    }
+    if(start->info==key)
+    {
+        printf("Deletion not possible\n");
+        return ;
+    }
+    if(start->next->info==key)
+    {
+        start=start->next;
+        printf("Deleted element is %d",temp->info);
+        free(temp);
+        return ;
+
+    }
+    while(temp!=NULL && temp->next->info!=key)
+    {
+        follow=temp;
+        temp=temp->next;
+    }
+    if(temp==NULL)
+    {
+        printf("Key not found\n");
+    }
+    else
+    {
+        follow->next=temp->next;
+        printf("Deleted element is %d",temp->info);
+        free(temp);
+    }
+
+
+}
+
+void delete_after()
+{
+    struct node *temp2,*temp=start;
+    int key;
+    printf("Enter the key after which the element is to be deleted:\t ");
+    scanf("%d",&key);
+    if(start==NULL)
+    {
+        printf("Empty list\n");
+        return ;
+    }
+    while(temp!=NULL && temp->info!=key)
+    {
+        temp=temp->next;
+    }
+    if(temp->next==NULL)
+    {
+        printf("Deletion not possible\n");
+    }
+    else
+    {
+        temp2=temp->next;
+        temp->next=temp2->next;
+        printf("Deleted element is %d\n",temp2->info);
+        free(temp2);
+    }
+}
+
+bool isPrime(int x)
+{
+    int flag=1;
+    if(x==1||x==0)
+        return 0;
+    for(int i=2;i<=x/2;i++)
+    {
+        if(x%i==0)
+        {
+            flag=0;
+            break;
+        }
+    }
+    if(flag==0)
+        return 0;
+    else
+        return 1;
+}
+
+void min_max_prime()
+{
+    struct node *temp=start;
+    int min=999;
+    int max=-999;
+    while(temp!=NULL)
+    {
+        if(temp->info<min && isPrime(temp->info))
+        {
+            min=temp->info;
+        }
+        if(temp->info>max && isPrime(temp->info))
+        {
+            max=temp->info;
+        }
+        temp=temp->next;
+    }
+    printf("Max element:%d\n",max);
+    printf("Min element:%d\n",min);
+
+}

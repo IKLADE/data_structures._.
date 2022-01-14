@@ -14,7 +14,7 @@ void insertcq()
 	{
 		printf("Enter element to be inserted:\t");
 		scanf("%d",&x);
-		if(front==-1)
+		if(front==-1 && rear=-1)
 		{
 			front=0;
 			rear=0;
@@ -69,6 +69,7 @@ void displaycq()
 		printf("\n");
 	}
 }
+
 int main()
 {
 	while(1)

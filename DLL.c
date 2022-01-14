@@ -232,10 +232,6 @@ void delete_middlenode()
     }
 }
 
-
-
-
-
 int main()
 {
     while(1)
