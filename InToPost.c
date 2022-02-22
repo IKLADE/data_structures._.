@@ -4,9 +4,9 @@
 #include<string.h>
 
 #define SIZE 100
-
 char stack[SIZE];
 int top=-1;
+
 
 void push(char item)
 {
@@ -14,7 +14,7 @@ void push(char item)
         printf("\nstack overflow.");
     else
     {
-        top=top+1;
+        top++;
         stack[top]=item;
     }
 }
@@ -29,7 +29,7 @@ char pop()
     else
     {
         item=stack[top];
-        top=top-1;
+        top--;
         return(item);
     }
 }
@@ -51,6 +51,18 @@ char peek()
 
 }
 
+void display()
+{
+    if(top==-1)
+        printf("Empty list\n");
+    else
+    {
+        printf("Stack elements are:\n");
+        for(int i=top;i>-1;i--)
+            printf("%d\t",stack[i]);
+    }
+}
+
 int prec(char x)
 {
     if(x=='^')
@@ -59,7 +71,7 @@ int prec(char x)
         return(2);
     else if(x=='+'||x=='-')
         return(1);
-    else if(x=='('||x==')')
+    else //if(x=='('||x==')')
         return(0);
 }
 
@@ -86,17 +98,16 @@ void InToPost(char infix[],char postfix[])
         {
             x=pop();
             while(x!='(')
-                {
-                    postfix[j]=x;
-                    j++;
-                    x=pop();
-                }
+            {
+                postfix[j]=x;
+                j++;
+                x=pop();
+            }
         }
         else
         {
-            y=peek();
-
-            while(prec(y)>=prec(item))
+            y=peek(); //y=topmost element of stack
+            while(prec(y)>=prec(item))  //item=scanned element
             {
                 x=pop();
                 postfix[j]=x;

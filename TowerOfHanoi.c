@@ -3,7 +3,6 @@
 
 void tower(int n,char s,char t,char d)
 {
-	int count=0;
 	if(n>0)
 	{
 		tower(n-1,s,d,t);

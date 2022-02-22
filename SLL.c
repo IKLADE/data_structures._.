@@ -17,6 +17,7 @@ void insert_before();
 void insert_after();
 void delete_before();
 void delete_after();
+void removeDuplicates();
 
 struct node
 {
@@ -44,7 +45,8 @@ int main()
         printf("11.Insert after\n");
         printf("12.Delete before\n");
         printf("13.Delete after\n");
-        printf("14.Exit\n");
+        printf("14.Remove Duplicates\n");
+        printf("15.Exit\n");
         scanf("%d",&c);
         switch(c)
         {
@@ -87,6 +89,9 @@ int main()
             case 13:
             delete_after();
             break;
+            case 14:
+            removeDuplicates();
+            break;
             default:
             exit(0);
         }
@@ -107,7 +112,7 @@ void insert_beg()
     if(start==NULL)
     {
         p->info=x;
-        p->next=NULL:
+        p->next=NULL;
         start=p;
     }
     else
@@ -148,11 +153,11 @@ void display()
         printf("The elements are:\n");
         while(temp!=NULL)
         {
-            printf("%d \t",temp->info);
+            printf("%d --> ",temp->info);
             temp=temp->next;
         }
     }
-    printf("\n");
+    printf("NULL\n");
 }
 
 void insert_end()
@@ -242,57 +247,46 @@ void insert_sorted()
     struct node *p=(struct node *)malloc(sizeof(struct node));
     printf("Enter element to be inserted in sorted sll:\t");
     scanf("%d",&x);
+    int flag=1;
+
     if(start==NULL)
     {
         p->info=x;
         p->next=NULL;
         start=p;
+        return ;
     }
-    else if(start->next==NULL)
-    {
-        if(x>=start->info)
-        {
-            p->info=x;    //insert_end(x); for first element
-            p->next=NULL;
-            start->next=p;
-        }
-        else
-        {
-            p->info=x;   //insert_beg(x); for first element
-            p->next=start;
-            start=p;
-        }
 
+    if(x<=start->info)
+    {
+        p->info=x;
+        p->next=start;
+        start=p;
+        return ;
     }
+    while(temp->next!=NULL)
+    {
+        follow=temp;
+        temp=temp->next;
+        if(x>=follow->info && x<=temp->info)
+        {
+            flag=0;   
+            break;
+        }
+    }
+
+    if(flag==0)
+    {
+        p->info=x;
+        follow->next=p;
+        p->next=temp;
+    }
+
     else
     {
-        while(temp->next!=NULL)
-        {
-            follow=temp;
-            temp=temp->next;
-            if(x>follow->info && x<temp->info)
-                break;           
-        }
-        if(x<follow->info)
-        {
-            p->info=x;   //insert_beg(x);
-            p->next=start;
-            start=p;
-
-        }
-        else if(x>=follow->info && x<=temp->info)
-        {
-            p->info=x;  //insert in between elements 
-            follow->next=p;
-            p->next=temp;
-        }
-        else //if(temp->next==NULL && x>=temp->info)
-        {
-            p->info=x;    //insert_end(x);
-            p->next=NULL;
-            temp->next=p;
-        }
-        
+        p->info=x;
+        temp->next=p;
+        p->next=NULL;
     }
 }
 void traverse_min()
@@ -330,17 +324,15 @@ void reversal()
         current = next;
     }
 
-    start = prev;
+    start = prev; 
 }
 
 void reverse_printing(struct node *start)    //reverse printing without actual reversal
 {
     if(start==NULL)
-    {
         return ;
-    }
     else
-    {
+    {    
         reverse_printing(start->next);
         printf("%d\t",start->info);
     }
@@ -357,15 +349,15 @@ void sort()
     }
     else
     {
-        while(temp!=NULL)
+        while(temp->next!=NULL)            //temp =20
         {
-            index=temp->next;
+            index=temp->next;        //index= 10
             while(index!=NULL)
             {
                 if(temp->info>index->info)
                 {
                     x=temp->info;
-                    temp->info=index->info;
+                    temp->info=index->info;  
                     index->info=x;
                 }
                 index=index->next;
@@ -385,15 +377,17 @@ struct node *mergesort(struct node *a,struct node *b)
     else if(b==NULL)
         return a;
 
-    if (a->info<=b->info) {
+    if (a->info<=b->info)
+    {
         temp=a;
         temp->next=mergesort(a->next, b);
     }
-    else {
+    else
+    {
         temp=b;
         temp->next=mergesort(a, b->next);
     }
-    return (temp);
+    return temp;
 }
 
 void insert_after()
@@ -574,3 +568,24 @@ void min_max_prime()
     printf("Min element:%d\n",min);
 
 }
+
+void removeDuplicates()
+{
+    struct node *temp=start,*index;
+    while(temp->next!=NULL)
+    {
+        index=temp->next;
+        if(temp->info==index->info)
+        {
+            temp->next=index->next;
+        }
+        else
+        {
+            temp=temp->next;
+        }
+    }
+
+}
+
+
+

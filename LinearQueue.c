@@ -2,8 +2,11 @@
 #include<stdlib.h>
 
 #define max_size 5
+
 int q[max_size];
-int front=-1,rear=-1;
+int front=-1;
+int rear=-1;
+
 
 void insertlq()
 {

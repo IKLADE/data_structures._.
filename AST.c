@@ -22,7 +22,7 @@ int big(int a,int b)
 int height(struct atree *root)
 {
     if(root==NULL)
-        return -1;
+        return -1;//using return 0 we get levels as 1,2,3 or else its 0,1,2
     else
         return(1+big(height(root->left),height(root->right)));
 }

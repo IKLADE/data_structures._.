@@ -9,7 +9,8 @@ struct tree
 };
 
 struct tree *root=NULL;
-int countleaf=0;
+int countleaf=0;//leaf counting
+int level=0;//search
 
 void insertbst()
 {
@@ -56,9 +57,8 @@ void createbst()
 
 struct tree* deletenode(struct tree *root,int x)
 {
-    struct tree *temp;
-    if(root == NULL)
-    return NULL;
+    struct tree *temp; //temp is for relinking
+    if(root == NULL) return NULL;
 
     if(x < root->info)
     root->left = deletenode(root->left,x);
@@ -66,7 +66,7 @@ struct tree* deletenode(struct tree *root,int x)
     else if(x > root->info)
     root->right=deletenode(root->right,x);
 
-    else
+    else //x==root->info
     {
         if(root->left==NULL && root->right==NULL)
         {
@@ -85,9 +85,9 @@ struct tree* deletenode(struct tree *root,int x)
             free(root);
             return temp;
         }
-        else
+        else //two children
         {
-            temp=root->right;
+            temp=root->right;  //smallest element from right subtree
             while(temp->left!=NULL)
             {
                 temp=temp->left;
@@ -243,12 +243,60 @@ void minbst()
     }
 }
 
+void searchBST(struct tree *root,int x)
+{
+    // if(root==NULL) return NULL;
+    // if(x<root->info) 
+    // {
+    //     searchBST(root->left,x);
+    //     level++;
+    // }
+    // else if(x>root->info)
+    // {
+    //     searchBST(root->right,BST);
+    //     level++;
+    // }
+    // else
+    //     return level;
+    
+    int level=0;
+    struct tree *temp=root;
+    if(root==NULL)
+    {
+        printf("no tree\n");
+    }
+    else
+    {
+        while(temp!=NULL && temp->info!=x)
+        {
+            if(x>temp->info)
+            {
+                temp=temp->right;
+                level ++;
+            }
+            else
+            {
+                temp=temp->left;
+                level++;
+            }
+        }
+        if(temp==NULL)
+        {
+            printf("no node found\n");
+        }
+        else
+        {
+            printf("element found at level%d",level);
+        }
+    }
+}
+
 int main()
 {
     while(1)
     {
         int c;
-        printf("\n1.Insert\n2.Create\n3.Delete\n4.Preorder\n5.Inorder\n6.Postorder\n7.Number of leaves\n8.Max element\n9.Min element\n10.Exit\n");
+        printf("\n1.Insert\n2.Create\n3.Delete\n4.Preorder\n5.Inorder\n6.Postorder\n7.Number of leaves\n8.Max element\n9.Min element\n10.Search element\n11.Exit\n");
         scanf("%d",&c);
         switch(c)
         {
@@ -261,13 +309,13 @@ int main()
             scanf("%d",&x);
             root=deletenode(root,x);
             break;
-            case 4:cout<<"Preorder:\n";
+            case 4:
             preorder(root);
             break;
-            case 5:cout<<"Inorder:\n";
+            case 5:
             inorder(root);
             break;
-            case 6:cout<<"Postorder:\n";
+            case 6:
             postorder(root);
             break;
             case 7:countleafbst(root);
@@ -277,6 +325,11 @@ int main()
             break;
             case 9:minbst();
             break;
+            case 10:int y;
+            printf("Enter element to be searched\n");
+            scanf("%d",&y);
+            searchBST(root,y);
+            break;
             default:exit(0);
             break;
         }
@@ -284,3 +337,5 @@ int main()
     
 
 }
+
+

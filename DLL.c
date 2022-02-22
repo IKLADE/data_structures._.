@@ -144,13 +144,13 @@ void display()
     }
     else
     {
-        printf("The elements are;\n");
+        printf("The elements are:\nNULL");
         while(temp!=NULL)
         {
-            printf("%d\t",temp->info);
+            printf(" <-- %d --> ",temp->info);
             temp=temp->next;
         }
-        printf("\n");
+        printf("NULL\n");
     }
 }
 
@@ -232,6 +232,91 @@ void delete_middlenode()
     }
 }
 
+void reverse()
+{
+    struct node *curr=start,*follow=NULL,*index=NULL;
+    while(curr!=NULL)
+    {
+        index=curr->next;
+        curr->prev=index;
+        curr->next=follow;
+        follow=curr;
+        curr=index;
+    }
+    start=follow;
+}
+
+// void reverse() {
+//     struct node *curr=start,*follow=start;
+//     while(curr!=NULL)
+//     {
+//         follow=curr->prev;
+//         curr->prev=curr->next;
+//         curr->next=follow;
+//         curr=curr->prev;
+//     }
+//     start=follow->prev;
+
+// }
+
+void sortedInsert() 
+{
+    int x;
+    printf("Enter element to be inserted in sorted manner:\n");
+    scanf("%d",&x);
+    struct node* temp=start,*follow=NULL,*p;
+    p=(struct node *)malloc(sizeof(struct node));
+    int flag=1;
+
+    if(start==NULL)
+    {
+        p->info=x;
+        p->next=NULL;
+        p->prev=NULL;
+        start=p;
+        return ;
+    }
+
+    while(temp->next!=NULL)
+    {
+        follow=temp;
+        temp=temp->next;
+        if(x>=follow->info && x<=temp->info)
+        {
+            flag=0;   
+            break;
+        }
+    }
+
+    if(x<=start->info)
+    {
+        p->info=x;
+        p->next=start;
+        p->prev=NULL;
+        start->prev=p;
+        start=p;
+    }
+
+    else if(flag==0)
+    {
+        p->info=x;
+        p->prev=follow;
+        follow->next=p;
+        p->next=temp;
+        temp->prev=p;
+    }
+
+    else
+    {
+        p->info=x;
+        temp->next=p;
+        p->prev=temp;
+        p->next=NULL;
+    }
+
+
+}
+
 int main()
 {
     while(1)
@@ -244,7 +329,8 @@ int main()
         printf("5.Delete at end\n");
         printf("6.Insert before a key\n");
         printf("7.Delete middle node\n");
-        printf("8.Exit\n");
+        printf("8.Reverse\n");
+        printf("9.Insertion sort\n");
         scanf("%d",&c);
         switch(c)
         {
@@ -262,7 +348,14 @@ int main()
             break;
             case 7:delete_middlenode();
             break;
+            case 8:reverse();
+            break;
+            case 9:sortedInsert();
+            break;
             default:exit(0);
         }
     }
 }
+
+
+

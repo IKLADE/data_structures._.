@@ -280,7 +280,37 @@ void insert_end()
         }
     }
 
- }
+}
+
+void sort()
+{
+    int x;
+    struct node *temp=head;
+    struct node *index;
+    if(head==NULL)
+    {
+        printf("empty list\n");
+    }
+    else
+    {
+        while(temp!=NULL)
+         {
+             index=temp->next;
+             while(index!=NULL)
+             {
+                 if(temp->info>index->info)
+                 {
+                 x=temp->info;
+                 temp->info=index->info;
+                 index->info=x;
+                 }
+                index=index->next;
+             }
+            temp=temp->next; 
+         }
+         
+    }
+}
 
 int main()
 {
